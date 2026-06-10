@@ -233,7 +233,7 @@ async function shareResultCard(elementToRender) {
   // Subtitle
   ctx.font = '24px sans-serif'; // Archivo fallback
   ctx.fillStyle = 'rgba(24, 21, 17, 0.6)';
-  ctx.fillText('1or2.com — Settle it.', 400, 150);
+  ctx.fillText('1or2 — Settle it.', 400, 150);
 
   // Draw options
   const startY = 250;

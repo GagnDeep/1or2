@@ -1,21 +1,21 @@
-const CACHE_NAME = '1or2-cache-v1';
+const CACHE_NAME = '1or2-cache-v2';
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/css/style.css',
-  '/js/app.js',
-  '/js/router.js',
-  '/js/store.js',
-  '/js/codec.js',
-  '/js/utils.js',
-  '/js/components/home.js',
-  '/js/components/decks.js',
-  '/js/components/create.js',
-  '/js/components/play.js',
-  '/js/components/mine.js',
-  '/data/matchups.json',
-  '/icon.png',
-  '/manifest.json'
+  './',
+  './index.html',
+  './css/style.css',
+  './js/app.js',
+  './js/router.js',
+  './js/store.js',
+  './js/codec.js',
+  './js/utils.js',
+  './js/components/home.js',
+  './js/components/decks.js',
+  './js/components/create.js',
+  './js/components/play.js',
+  './js/components/mine.js',
+  './data/matchups.json',
+  './icon.png',
+  './manifest.json'
 ];
 
 self.addEventListener('install', event => {
