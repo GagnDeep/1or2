@@ -48,7 +48,19 @@ function renderCreatedTab() {
   const polls = store.state.createdPolls;
 
   if (polls.length === 0) {
-    content.innerHTML = `<p class="text-center" style="opacity: 0.6;">You haven't created any polls yet.</p><div class="text-center mt-1"><a href="#/create" class="btn btn-red hard-shadow">Create One Now</a></div>`;
+    content.innerHTML = `
+      <div class="text-center tactile-border" style="padding: 3rem 1rem;">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 1rem;">
+          <rect x="20" y="20" width="80" height="80" rx="4" stroke="var(--ink)" stroke-width="4"/>
+          <line x1="40" y1="40" x2="80" y2="40" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/>
+          <line x1="40" y1="60" x2="60" y2="60" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="80" cy="80" r="12" fill="var(--red)" stroke="var(--ink)" stroke-width="4"/>
+          <path d="M76 80L79 83L85 77" stroke="var(--bg-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p style="opacity: 0.8; font-size: 1.1rem; margin-bottom: 1.5rem;">You haven't created any polls yet. The canvas is blank!</p>
+        <a href="#/create" class="btn btn-red hard-shadow">Create a Poll</a>
+      </div>
+    `;
     return;
   }
 
@@ -96,7 +108,17 @@ function renderVotedTab() {
   const votedKeys = Object.keys(store.state.votedPolls);
 
   if (votedKeys.length === 0) {
-    content.innerHTML = `<p class="text-center" style="opacity: 0.6;">You haven't voted on any polls yet.</p><div class="text-center mt-1"><a href="#/decks" class="btn btn-primary hard-shadow">Play Classics</a></div>`;
+    content.innerHTML = `
+      <div class="text-center tactile-border" style="padding: 3rem 1rem;">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 1rem;">
+          <rect x="10" y="40" width="100" height="40" rx="20" stroke="var(--ink)" stroke-width="4"/>
+          <circle cx="30" cy="60" r="12" fill="var(--blue)" stroke="var(--ink)" stroke-width="4"/>
+          <path d="M50 60H90" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" stroke-dasharray="4 4"/>
+        </svg>
+        <p style="opacity: 0.8; font-size: 1.1rem; margin-bottom: 1.5rem;">You haven't voted on any polls yet. Time to settle some debates!</p>
+        <a href="#/decks" class="btn btn-primary hard-shadow">Play Classics</a>
+      </div>
+    `;
     return;
   }
 

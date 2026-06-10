@@ -26,10 +26,15 @@ export async function renderPlay(container, payload) {
   } catch (e) {
     console.error("Play component error:", e);
     containerEl.innerHTML = `
-      <div class="container text-center mt-2">
-        <h2 class="display-text">Invalid Poll</h2>
-        <p>This link appears to be broken or corrupted.</p>
-        <a href="#/" class="btn btn-primary mt-1">Back Home</a>
+      <div class="container text-center tactile-border hard-shadow mt-2" style="padding: 4rem 2rem; max-width: 600px;">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 1.5rem;">
+          <path d="M40 8C22.3269 8 8 22.3269 8 40C8 57.6731 22.3269 72 40 72C57.6731 72 72 57.6731 72 40C72 22.3269 57.6731 8 40 8Z" stroke="var(--ink)" stroke-width="4"/>
+          <path d="M28 28L52 52" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M52 28L28 52" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        <h2 class="display-text mb-1">Invalid Link</h2>
+        <p style="opacity: 0.8; margin-bottom: 2rem;">We couldn't decode this poll. The link might be incomplete or corrupted.</p>
+        <a href="#/" class="btn btn-primary hard-shadow">Go Home</a>
       </div>
     `;
   }
@@ -52,7 +57,7 @@ function renderStandardPoll() {
 
   if (currentPoll.type === 'duel' || currentPoll.type === 'verdict') {
     optionsHtml = `
-      <div class="flex flex-col gap-1" style="position: relative;" id="poll-options-container">
+      <div class="flex flex-col gap-1 stagger-enter" style="position: relative;">
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; background: var(--bg-color); padding: 0.5rem; border-radius: 50%; font-family: var(--font-display); font-weight: 700; border: 2px solid var(--ink);">OR</div>
         ${currentPoll.options.map((opt, i) => `
           <button class="tactile-border hard-shadow poll-opt-btn" data-idx="${i}" style="position: relative; overflow: hidden; padding: 2rem; background-color: var(--bg-color); cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; outline: none;">
@@ -143,28 +148,43 @@ function handleVote(choiceIdx, isReplay) {
   // For visual effect, if we had previous votes we'd show them, but here the device is the source of truth for this user.
   const total = 1;
 
-  currentPoll.options.forEach((opt, i) => {
-    const pct = i === choiceIdx ? 100 : 0;
-    const pctEl = document.getElementById(`pct-${i}`);
-    const barEl = document.getElementById(`bar-${i}`);
-    if (pctEl) {
-      pctEl.style.display = 'block';
-      pctEl.textContent = pct + '%';
+  import('../utils.js').then(({ animateCountUp, fireConfetti }) => {
+    // Determine winner for tournament
+    if (currentPoll.type === 'tournament' && !isReplay) {
+        fireConfetti();
     }
-    if (barEl) {
-      setTimeout(() => {
-        barEl.style.width = pct + '%';
-      }, 50);
-    }
+
+    currentPoll.options.forEach((opt, i) => {
+      const pct = i === choiceIdx ? 100 : 0;
+      const pctEl = document.getElementById(`pct-${i}`);
+      const barEl = document.getElementById(`bar-${i}`);
+      const btn = document.querySelector(`.poll-opt-btn[data-idx="${i}"]`);
+
+      if (pctEl) {
+        pctEl.style.display = 'block';
+        animateCountUp(pctEl, pct);
+      }
+      if (barEl) {
+        setTimeout(() => {
+          barEl.style.width = pct + '%';
+        }, 50);
+      }
+      if (btn && i === choiceIdx && currentPoll.type !== 'tournament') {
+        btn.style.setProperty('--flood-color', i === 0 ? 'rgba(217, 68, 42, 0.1)' : 'rgba(31, 79, 168, 0.1)');
+        btn.classList.add('vote-locked');
+      }
+    });
   });
 
   const feedback = document.getElementById('poll-feedback');
   if (feedback) {
     setTimeout(() => {
       feedback.innerHTML = `
-        <p class="mb-1" style="opacity: 0.8; font-size: 0.9rem;">
-          Results on this device. 1or2 polls are serverless. Compare results with friends by sharing screenshots!
-        </p>
+        <div aria-live="polite">
+          <p class="mb-1" style="opacity: 0.8; font-size: 0.9rem;">
+            Results on this device. 1or2 polls are serverless. Compare results with friends by sharing screenshots!
+          </p>
+        </div>
         <button id="download-result-btn" class="btn btn-primary hard-shadow">Share Result Card</button>
       `;
       const dlBtn = document.getElementById('download-result-btn');
@@ -390,6 +410,10 @@ function renderTournamentMatch() {
 
 function renderTournamentWinner(winner) {
   store.recordVote(pollId, currentPoll.options.findIndex(o => o.label === winner.label));
+  import('../utils.js').then(({ fireConfetti }) => {
+    fireConfetti();
+  });
+
   containerEl.innerHTML = `
     <div class="container text-center tactile-border hard-shadow mt-2" style="padding: 3rem 1rem; max-width: 600px;" id="poll-render-card">
       <h2 class="display-text mb-1">Champion Crowned</h2>
