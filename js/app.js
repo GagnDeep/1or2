@@ -8,7 +8,13 @@ document.addEventListener('keydown', (e) => {
 
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
-  if (e.key === '1') {
+  if (e.key === 'Escape') {
+    document.getElementById('onboarding-close')?.click();
+    document.querySelectorAll('.toast').forEach(t => {
+      t.classList.add('hiding');
+      setTimeout(() => t.remove(), 300);
+    });
+  } else if (e.key === '1') {
     const opt1 = document.getElementById('deck-opt-1') || document.querySelector('.poll-opt-btn[data-idx="0"]') || document.querySelector('.t-opt-btn[data-idx="0"]');
     if (opt1 && !opt1.disabled) opt1.click();
   } else if (e.key === '2') {
@@ -26,7 +32,36 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+function showToast(message, duration = 3000) {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('hiding');
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+
+// Global Event Listeners (e.g. Keyboard hints)
+window.addEventListener('offline', () => {
+  showToast('You are offline. Polls are local-first, so keep voting!', 5000);
+});
+
+window.addEventListener('online', () => {
+  showToast('You are back online.', 3000);
+});
+
 // Boot
 document.addEventListener('DOMContentLoaded', () => {
   initRouter();
+
+  // Register Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(err => {
+      console.error('Service worker registration failed:', err);
+    });
+  }
 });

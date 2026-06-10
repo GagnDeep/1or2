@@ -70,6 +70,43 @@ function renderLayout(activeCategory) {
   }
 }
 
+function checkOnboarding() {
+  if (localStorage.getItem('1or2_onboarding_done')) return;
+  const gameArea = document.getElementById('decks-game-area');
+
+  const coachMarkHtml = `
+    <div id="onboarding-coach-mark" style="position: absolute; top: -60px; right: 0; background: var(--ink); color: var(--bg-color); padding: 0.75rem; border-radius: 4px; z-index: 100; font-weight: 600; box-shadow: var(--hard-shadow); display: flex; align-items: center; gap: 0.5rem; animation: slideUpFade 0.3s ease-out forwards;">
+      <span id="onboarding-text">Tap an option to vote!</span>
+      <button id="onboarding-close" style="background: none; border: none; color: var(--bg-color); cursor: pointer; font-size: 1.2rem; padding: 0 0.25rem;">&times;</button>
+      <div style="position: absolute; bottom: -8px; right: 20px; width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid var(--ink);"></div>
+    </div>
+  `;
+
+  gameArea.insertAdjacentHTML('beforeend', coachMarkHtml);
+
+  document.getElementById('onboarding-close').addEventListener('click', () => {
+    document.getElementById('onboarding-coach-mark')?.remove();
+    localStorage.setItem('1or2_onboarding_done', 'true');
+  });
+}
+
+export function updateOnboarding(step) {
+  if (localStorage.getItem('1or2_onboarding_done')) return;
+  const cm = document.getElementById('onboarding-coach-mark');
+  if (!cm) return;
+
+  const textEl = document.getElementById('onboarding-text');
+  if (step === 2) {
+    textEl.textContent = 'See what the crowd thinks!';
+  } else if (step === 3) {
+    textEl.textContent = 'Keep your streak alive!';
+    setTimeout(() => {
+      cm.remove();
+      localStorage.setItem('1or2_onboarding_done', 'true');
+    }, 4000);
+  }
+}
+
 function renderCurrentMatchup() {
   const gameArea = document.getElementById('decks-game-area');
   const progressEl = document.getElementById('decks-progress');
@@ -87,7 +124,7 @@ function renderCurrentMatchup() {
   const hasVoted = store.hasVoted('classic_' + match.id);
 
   gameArea.innerHTML = `
-    <div class="flex flex-col gap-1" style="position: relative;">
+    <div class="flex flex-col gap-1 stagger-enter" style="position: relative;">
       <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10; background: var(--bg-color); padding: 0.5rem; border-radius: 50%; font-family: var(--font-display); font-weight: 700; border: 2px solid var(--ink);">OR</div>
 
       <button id="deck-opt-1" class="tactile-border hard-shadow" style="position: relative; overflow: hidden; padding: 2rem; background-color: var(--bg-color); cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; outline: none;">
@@ -96,7 +133,7 @@ function renderCurrentMatchup() {
           <span style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 600;">${escapeHTML(match.option1.label)}</span>
         </div>
         <div id="deck-pct-1" style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; z-index: 2; display: none;"></div>
-        <div id="deck-bar-1" style="position: absolute; top: 0; left: 0; height: 100%; width: 0%; background-color: var(--red); opacity: 0.2; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); z-index: 1;"></div>
+        <div id="deck-bar-1" style="position: absolute; top: 0; left: 0; height: 100%; width: 0%; background-color: var(--red); opacity: 0.2; transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 1;"></div>
       </button>
 
       <button id="deck-opt-2" class="tactile-border hard-shadow" style="position: relative; overflow: hidden; padding: 2rem; background-color: var(--bg-color); cursor: pointer; text-align: left; display: flex; align-items: center; justify-content: space-between; outline: none;">
@@ -105,7 +142,7 @@ function renderCurrentMatchup() {
           <span style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 600;">${escapeHTML(match.option2.label)}</span>
         </div>
         <div id="deck-pct-2" style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; z-index: 2; display: none;"></div>
-        <div id="deck-bar-2" style="position: absolute; top: 0; left: 0; height: 100%; width: 0%; background-color: var(--blue); opacity: 0.2; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); z-index: 1;"></div>
+        <div id="deck-bar-2" style="position: absolute; top: 0; left: 0; height: 100%; width: 0%; background-color: var(--blue); opacity: 0.2; transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 1;"></div>
       </button>
     </div>
 
@@ -118,6 +155,7 @@ function renderCurrentMatchup() {
   } else {
     document.getElementById('deck-opt-1').addEventListener('click', () => handleVote(0));
     document.getElementById('deck-opt-2').addEventListener('click', () => handleVote(1));
+    setTimeout(checkOnboarding, 100);
   }
 }
 
@@ -161,6 +199,21 @@ function handleVote(choiceIndex, isReplay = false) {
   document.getElementById('deck-pct-2').textContent = pct2 + '%';
 
   // Animate bars
+  // Animate bars and count up
+  import('../utils.js').then(({ animateCountUp, fireConfetti }) => {
+    animateCountUp(document.getElementById('deck-pct-1'), pct1);
+    animateCountUp(document.getElementById('deck-pct-2'), pct2);
+
+    // Add vote lock pulse
+    const selectedBtn = choiceIndex === 0 ? btn1 : btn2;
+    selectedBtn.style.setProperty('--flood-color', choiceIndex === 0 ? 'rgba(217, 68, 42, 0.1)' : 'rgba(31, 79, 168, 0.1)');
+    selectedBtn.classList.add('vote-locked');
+
+    if (isMajority && !isReplay) {
+        fireConfetti();
+    }
+  });
+
   setTimeout(() => {
     document.getElementById('deck-bar-1').style.width = pct1 + '%';
     document.getElementById('deck-bar-2').style.width = pct2 + '%';
@@ -182,7 +235,14 @@ function handleVote(choiceIndex, isReplay = false) {
   else if (isMajority) msg = '<span class="badge majority">MAJORITY ✓</span> You are with the crowd.';
   else msg = '<span class="badge underdog">UNDERDOG</span> You went against the grain.';
 
+  if (!isReplay) {
+      updateOnboarding(2);
+  }
+
   setTimeout(() => {
+    if (!isReplay) {
+        updateOnboarding(3);
+    }
     feedbackEl.innerHTML = `
       <div class="mb-1" style="font-weight: 600;" aria-live="polite">${msg}</div>
       <button id="deck-next-btn" class="btn btn-primary hard-shadow" style="position: relative; overflow: hidden;">

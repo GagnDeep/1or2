@@ -269,10 +269,10 @@ export function renderOptionsEditor() {
     html += `
       <div class="flex flex-col gap-1 tactile-border" style="padding: 1rem;">
         <div class="flex gap-1 items-center">
-          <button class="btn emoji-btn tactile-border hard-shadow" data-idx="${idx}" style="padding: 0.5rem; font-size: 1.5rem; min-width: 50px;" ${isLocked ? 'disabled' : ''}>${opt.emoji}</button>
+          <button class="btn emoji-btn tactile-border hard-shadow" data-idx="${idx}" aria-label="Change emoji for option ${idx + 1}" style="padding: 0.5rem; font-size: 1.5rem; min-width: 50px;" ${isLocked ? 'disabled' : ''}>${opt.emoji}</button>
           <input type="text" class="form-input opt-input" data-idx="${idx}" value="${opt.label}" placeholder="Option ${idx + 1} Label" maxlength="40" ${isLocked ? 'disabled' : ''}>
           ${(pollDraft.type === 'poll' || pollDraft.type === 'tournament') && pollDraft.options.length > 2 ?
-            `<button class="btn btn-red remove-opt-btn hard-shadow" data-idx="${idx}" style="padding: 0.5rem;">×</button>` : ''}
+            `<button class="btn btn-red remove-opt-btn hard-shadow" data-idx="${idx}" aria-label="Remove option ${idx + 1}" style="padding: 0.5rem;">×</button>` : ''}
         </div>
         <div class="flex gap-1 items-center">
           <input type="url" class="form-input opt-img-input" data-idx="${idx}" value="${opt.image || ''}" placeholder="Image URL (optional)" ${isLocked ? 'disabled' : ''} style="font-size: 0.85rem; padding: 0.5rem;">

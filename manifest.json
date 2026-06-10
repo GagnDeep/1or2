@@ -1,0 +1,18 @@
+{
+  "name": "1or2 - Settle it.",
+  "short_name": "1or2",
+  "description": "A beautiful serverless poll platform. Create and share polls instantly.",
+  "start_url": "./#/",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FAF4E8",
+  "theme_color": "#FAF4E8",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
