@@ -1,20 +1,20 @@
 # 1or2
 
-A fun, beautiful, head-to-head voting game built for `1or2.com`.
+A beautiful serverless poll platform built for `1or2.com`.
 
-Visitor taps one option out of two; their pick locks in with an animation, then animated percentage bars reveal how everyone else voted.
+Visitor taps one option out of two (or more); their pick locks in, then percentage bars reveal results. Anyone can create polls and share them instantly.
 
 ## Features
-- **No-build Vanilla JS:** Runs directly in the browser, no bundlers needed.
-- **Responsive:** Mobile-first design layout.
-- **Categories:** Filter by food, travel, tech, lifestyle, and more.
-- **Keyboard Support:** `1` or `2` to vote, `Enter` or `ArrowRight` to advance.
-- **Persistence:** Remembers your overall votes and streak in `localStorage`.
-- **Accessible:** Semantic HTML, ARIA tags, and support for `prefers-reduced-motion`.
+- **Serverless Architecture:** A created poll is serialized to JSON, compressed natively via `CompressionStream('deflate-raw')`, encoded to base64url, and passed in the URL hash (`#/p/<payload>`). There is no backend database for polls!
+- **Local First Data:** Votes and stats are persisted per-device in `localStorage`. Users see their device's results.
+- **Poll Studio:** Multi-step form to create Duels (1v2), Polls (multi-choice), Verdicts (Yes/No), and Tournaments (Brackets).
+- **Beautiful Result Cards:** After voting, users can generate and download a stylized canvas result card to share via the Web Share API.
+- **No-build Vanilla JS:** Runs directly in the browser, ES Modules used throughout.
+- **Accessible:** Semantic HTML, keyboard support (`1`, `2`, `Enter`), and full `prefers-reduced-motion` support.
 
 ## How to run locally
 
-Since it uses ES Modules and `fetch` for data, you need to serve the directory via HTTP.
+Since it uses ES Modules, you need to serve the directory via HTTP.
 
 You can use python:
 ```bash
@@ -30,11 +30,14 @@ Then visit `http://localhost:8000` (or the port specified by your tool) in your 
 
 ## Architecture & File Structure
 
-- `index.html`: The main app shell
-- `css/style.css`: Complete design system (Dark mode, custom gradients, CSS variables)
-- `js/app.js`: Main application logic and state
-- `data/matchups.json`: Seed data containing 40+ scenarios and vote counts.
-- `.github/workflows/pages.yml`: Deploys the static site to GitHub pages on push.
+- `index.html`: The main SPA shell
+- `css/style.css`: The complete design system (letterpress ballot / editorial zine aesthetic)
+- `js/app.js`: Entry point and global event listeners
+- `js/router.js`: Hash-based component router
+- `js/store.js`: Event emitter for state and `localStorage` persistence
+- `js/codec.js`: Compression and base64url encoding for serverless sharing
+- `js/decks.js`: Seed data for the curated "Classics"
+- `js/components/*.js`: View modules (home, decks, create, play, mine)
 
-## How voting works
-When a user votes, their vote is instantly added to the "community" seeds. The majority percentage is then calculated. A running agreement percentage dictates how often the user votes with the crowd.
+## Creating & Sharing Polls
+When a user finishes the "Create" form, `codec.js` serializes the configuration into a compact hash string. The generated link can be shared anywhere. Opening that link decodes the state entirely in the client's browser without any server requests.
