@@ -353,6 +353,22 @@ main {
   color: white;
 }
 
+.progress-bar-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.4);
+  width: 0%;
+  border-radius: 0 0 99px 99px;
+  pointer-events: none;
+}
+
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
 /* Summary Screen */
 .summary-card {
   background-color: var(--card-bg);
@@ -379,11 +395,24 @@ main {
   margin-bottom: 2rem;
 }
 
+.stat-section {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.stat-section h3 {
+  font-family: var(--font-display);
+  color: var(--text-muted);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.75rem;
+}
+
 .stat-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin-bottom: 2rem;
 }
 
 .stat-box {

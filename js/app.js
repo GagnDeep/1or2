@@ -5,9 +5,21 @@ let currentDeck = [];
 let currentIndex = 0;
 let userStats = {
   totalVotes: 0,
-  majorityMatches: 0
+  majorityMatches: 0,
+  currentStreak: 0,
+  bestStreak: 0,
+  votes: {} // id -> choice
+};
+let runStats = {
+  answered: 0,
+  matches: 0
 };
 let isAnimating = false;
+let autoAdvanceTimer = null;
+let autoAdvanceStart = 0;
+let autoAdvancePausedTime = 0;
+let autoAdvanceIsPaused = false;
+const AUTO_ADVANCE_MS = 2500;
 
 // DOM Elements
 const gameContainer = document.getElementById('game-container');
@@ -17,6 +29,7 @@ const card2 = document.getElementById('card-2');
 const cardsWrapper = document.getElementById('cards-wrapper');
 const progressText = document.getElementById('progress-text');
 const agreementText = document.getElementById('agreement-text');
+const streakText = document.getElementById('streak-text');
 const interactionArea = document.getElementById('interaction-area');
 const filtersContainer = document.getElementById('filters');
 
@@ -42,7 +55,11 @@ function loadStats() {
   const saved = localStorage.getItem('1or2_stats');
   if (saved) {
     try {
-      userStats = JSON.parse(saved);
+      const parsed = JSON.parse(saved);
+      userStats = { ...userStats, ...parsed };
+      if (!userStats.votes) userStats.votes = {};
+      if (!userStats.currentStreak) userStats.currentStreak = 0;
+      if (!userStats.bestStreak) userStats.bestStreak = 0;
     } catch (e) {
       console.warn("Could not parse stats", e);
     }
@@ -57,6 +74,7 @@ function saveStats() {
 function updateHeaderStats() {
   const agreement = userStats.totalVotes === 0 ? 0 : Math.round((userStats.majorityMatches / userStats.totalVotes) * 100);
   agreementText.textContent = `${agreement}%`;
+  streakText.textContent = userStats.currentStreak;
 }
 
 // Game Logic
@@ -76,13 +94,22 @@ function startNewGame(category = 'all') {
     currentDeck = shuffleArray(matchupsData.filter(m => m.category === category));
   }
 
+  runStats = { answered: 0, matches: 0 };
   currentIndex = 0;
   gameContainer.classList.remove('hidden');
   summaryContainer.classList.add('hidden');
   renderCurrentMatchup();
 }
 
+function clearAutoAdvance() {
+  if (autoAdvanceTimer) {
+    cancelAnimationFrame(autoAdvanceTimer);
+    autoAdvanceTimer = null;
+  }
+}
+
 function renderCurrentMatchup() {
+  clearAutoAdvance();
   if (currentIndex >= currentDeck.length) {
     showSummary();
     return;
@@ -116,17 +143,24 @@ function renderCurrentMatchup() {
     <div class="percent-label" id="pct-2"></div>
     <div class="result-bar-bg" id="bar-2"></div>
   `;
+
+  if (userStats.votes[match.id]) {
+    // Already voted, show results immediately
+    handleVote(userStats.votes[match.id], true);
+  }
 }
 
-function handleVote(choice) {
-  if (isAnimating || cardsWrapper.classList.contains('voted')) return;
+function handleVote(choice, isReplay = false) {
+  if (!isReplay && (isAnimating || cardsWrapper.classList.contains('voted'))) return;
   isAnimating = true;
 
   const match = currentDeck[currentIndex];
 
-  // Optimistically add user vote
-  if (choice === 1) match.votes1++;
-  else match.votes2++;
+  // Optimistically add user vote if not a replay
+  if (!isReplay) {
+    if (choice === 1) match.votes1++;
+    else match.votes2++;
+  }
 
   const total = match.votes1 + match.votes2;
   const pct1 = Math.round((match.votes1 / total) * 100);
@@ -161,10 +195,24 @@ function handleVote(choice) {
   const isTie = pct1 === pct2;
 
   // Update Stats
-  userStats.totalVotes++;
-  if (isMajority) userStats.majorityMatches++;
-  saveStats();
-  updateHeaderStats();
+  if (!isReplay) {
+    userStats.votes[match.id] = choice;
+    userStats.totalVotes++;
+    runStats.answered++;
+
+    if (isMajority) {
+      userStats.majorityMatches++;
+      userStats.currentStreak++;
+      runStats.matches++;
+      if (userStats.currentStreak > userStats.bestStreak) {
+        userStats.bestStreak = userStats.currentStreak;
+      }
+    } else {
+      userStats.currentStreak = 0;
+    }
+    saveStats();
+    updateHeaderStats();
+  }
 
   // Show Feedback
   let feedbackHtml = '';
@@ -176,31 +224,85 @@ function handleVote(choice) {
     feedbackHtml = `<div class="feedback-text minority-match" aria-live="polite">You went against the crowd 🐺</div>`;
   }
 
-  feedbackHtml += `<button id="next-btn" class="btn">Next <span aria-hidden="true">→</span></button>`;
+  feedbackHtml += `<button id="next-btn" class="btn">Next <span aria-hidden="true">→</span><div class="progress-bar-container" id="next-progress"></div></button>`;
 
   setTimeout(() => {
     interactionArea.innerHTML = feedbackHtml;
-    document.getElementById('next-btn').addEventListener('click', nextMatchup);
-    document.getElementById('next-btn').focus();
+    const nextBtn = document.getElementById('next-btn');
+    nextBtn.addEventListener('click', nextMatchup);
+    if (!isReplay) {
+      nextBtn.focus();
+    }
+
+    startAutoAdvance();
 
     // Confetti effect if majority
-    if (isMajority && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!isReplay && isMajority && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       createConfetti(choice);
     }
-  }, 1000);
+  }, isReplay ? 0 : 1000);
+}
+
+function startAutoAdvance() {
+  clearAutoAdvance();
+  autoAdvanceStart = performance.now();
+  autoAdvancePausedTime = 0;
+  autoAdvanceIsPaused = false;
+
+  const progressBar = document.getElementById('next-progress');
+
+  const tick = (now) => {
+    if (autoAdvanceIsPaused) {
+      autoAdvanceStart += (now - autoAdvancePausedTime);
+      autoAdvancePausedTime = now;
+    }
+
+    const elapsed = now - autoAdvanceStart;
+    const progress = Math.min(elapsed / AUTO_ADVANCE_MS, 1);
+
+    if (progressBar && !autoAdvanceIsPaused) {
+      progressBar.style.width = `${progress * 100}%`;
+    }
+
+    if (progress >= 1) {
+      nextMatchup();
+    } else {
+      autoAdvanceTimer = requestAnimationFrame(tick);
+    }
+  };
+
+  autoAdvanceTimer = requestAnimationFrame(tick);
+}
+
+function toggleAutoAdvancePause(pause) {
+  if (pause && !autoAdvanceIsPaused) {
+    autoAdvanceIsPaused = true;
+    autoAdvancePausedTime = performance.now();
+  } else if (!pause && autoAdvanceIsPaused) {
+    autoAdvanceIsPaused = false;
+  }
 }
 
 function nextMatchup() {
+  clearAutoAdvance();
   currentIndex++;
   renderCurrentMatchup();
 }
 
 // Filters
+function formatCategoryLabel(cat) {
+  if (cat === 'all') return 'All';
+  if (cat.includes('/')) {
+    return cat.split('/').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' & ');
+  }
+  return cat.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
 function buildFilters() {
   const categories = ['all', ...new Set(matchupsData.map(m => m.category))];
 
   filtersContainer.innerHTML = categories.map(cat => {
-    const label = cat.charAt(0).toUpperCase() + cat.slice(1).replace('-', ' ');
+    const label = formatCategoryLabel(cat);
     return `<button class="chip ${cat === 'all' ? 'active' : ''}" data-cat="${cat}">${label}</button>`;
   }).join('');
 
@@ -215,13 +317,19 @@ function buildFilters() {
 
 // Summary Screen
 function showSummary() {
+  clearAutoAdvance();
   gameContainer.classList.add('hidden');
   summaryContainer.classList.remove('hidden');
 
   const agreement = userStats.totalVotes === 0 ? 0 : Math.round((userStats.majorityMatches / userStats.totalVotes) * 100);
 
+  document.getElementById('run-votes').textContent = runStats.answered;
+  document.getElementById('run-matches').textContent = runStats.matches;
+
   document.getElementById('final-votes').textContent = userStats.totalVotes;
   document.getElementById('final-agreement').textContent = `${agreement}%`;
+  document.getElementById('final-streak').textContent = userStats.currentStreak;
+  document.getElementById('final-best-streak').textContent = userStats.bestStreak;
 
   document.getElementById('play-again-btn').onclick = () => startNewGame();
 
@@ -240,6 +348,15 @@ function showSummary() {
 function setupEventListeners() {
   card1.addEventListener('click', () => handleVote(1));
   card2.addEventListener('click', () => handleVote(2));
+
+  // Pause auto-advance on hover/focus
+  const pauseAdvance = () => toggleAutoAdvancePause(true);
+  const resumeAdvance = () => toggleAutoAdvancePause(false);
+
+  gameContainer.addEventListener('mouseenter', pauseAdvance, true);
+  gameContainer.addEventListener('mouseleave', resumeAdvance, true);
+  gameContainer.addEventListener('focusin', pauseAdvance, true);
+  gameContainer.addEventListener('focusout', resumeAdvance, true);
 
   // Keyboard support
   document.addEventListener('keydown', (e) => {

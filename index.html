@@ -15,7 +15,8 @@
   <header>
     <div class="logo">1or2</div>
     <div class="stats" aria-label="Your voting stats">
-      <div>Agreement: <span id="agreement-text">0%</span></div>
+      <div title="Current Streak">🔥 <span id="streak-text">0</span></div>
+      <div title="All-time Agreement">Agreement: <span id="agreement-text">0%</span></div>
       <div id="progress-text">0 / 0</div>
     </div>
   </header>
@@ -52,14 +53,39 @@
         <h1 class="summary-title">Deck Complete!</h1>
         <p class="summary-subtitle">Here's how you stack up against the internet.</p>
 
-        <div class="stat-grid">
-          <div class="stat-box">
-            <div class="stat-value" id="final-votes">0</div>
-            <div class="stat-label">Total Votes</div>
+        <div class="stat-section">
+          <h3>This Run</h3>
+          <div class="stat-grid">
+            <div class="stat-box">
+              <div class="stat-value" id="run-votes">0</div>
+              <div class="stat-label">Answered</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="run-matches">0</div>
+              <div class="stat-label">Matches</div>
+            </div>
           </div>
-          <div class="stat-box">
-            <div class="stat-value" id="final-agreement">0%</div>
-            <div class="stat-label">Majority Match</div>
+        </div>
+
+        <div class="stat-section">
+          <h3>All Time</h3>
+          <div class="stat-grid">
+            <div class="stat-box">
+              <div class="stat-value" id="final-votes">0</div>
+              <div class="stat-label">Total Votes</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="final-agreement">0%</div>
+              <div class="stat-label">Match %</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="final-streak">0</div>
+              <div class="stat-label">Current Streak</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="final-best-streak">0</div>
+              <div class="stat-label">Best Streak</div>
+            </div>
           </div>
         </div>
 
