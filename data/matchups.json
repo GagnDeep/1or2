@@ -1,0 +1,330 @@
+[
+  {
+    "id": "1",
+    "category": "food",
+    "option1": { "label": "Pizza", "emoji": "🍕" },
+    "option2": { "label": "Burger", "emoji": "🍔" },
+    "votes1": 45120,
+    "votes2": 38900
+  },
+  {
+    "id": "2",
+    "category": "travel",
+    "option1": { "label": "Beach", "emoji": "🏖️" },
+    "option2": { "label": "Mountains", "emoji": "⛰️" },
+    "votes1": 21000,
+    "votes2": 19500
+  },
+  {
+    "id": "3",
+    "category": "tech",
+    "option1": { "label": "iOS", "emoji": "📱" },
+    "option2": { "label": "Android", "emoji": "🤖" },
+    "votes1": 56000,
+    "votes2": 54200
+  },
+  {
+    "id": "4",
+    "category": "lifestyle",
+    "option1": { "label": "Early Bird", "emoji": "🌅" },
+    "option2": { "label": "Night Owl", "emoji": "🦉" },
+    "votes1": 15000,
+    "votes2": 28000
+  },
+  {
+    "id": "5",
+    "category": "animals",
+    "option1": { "label": "Dogs", "emoji": "🐶" },
+    "option2": { "label": "Cats", "emoji": "🐱" },
+    "votes1": 89000,
+    "votes2": 72000
+  },
+  {
+    "id": "6",
+    "category": "movies/entertainment",
+    "option1": { "label": "Marvel", "emoji": "🦸‍♂️" },
+    "option2": { "label": "DC", "emoji": "🦇" },
+    "votes1": 65000,
+    "votes2": 32000
+  },
+  {
+    "id": "7",
+    "category": "would-you-rather",
+    "option1": { "label": "Fly", "emoji": "🦅" },
+    "option2": { "label": "Invisible", "emoji": "👻" },
+    "votes1": 41000,
+    "votes2": 45000
+  },
+  {
+    "id": "8",
+    "category": "food",
+    "option1": { "label": "Coffee", "emoji": "☕" },
+    "option2": { "label": "Tea", "emoji": "🍵" },
+    "votes1": 62000,
+    "votes2": 48000
+  },
+  {
+    "id": "9",
+    "category": "food",
+    "option1": { "label": "Sweet", "emoji": "🍩" },
+    "option2": { "label": "Savory", "emoji": "🥨" },
+    "votes1": 34000,
+    "votes2": 41000
+  },
+  {
+    "id": "10",
+    "category": "travel",
+    "option1": { "label": "Road Trip", "emoji": "🚗" },
+    "option2": { "label": "Fly", "emoji": "✈️" },
+    "votes1": 22000,
+    "votes2": 35000
+  },
+  {
+    "id": "11",
+    "category": "tech",
+    "option1": { "label": "Mac", "emoji": "💻" },
+    "option2": { "label": "Windows", "emoji": "🪟" },
+    "votes1": 38000,
+    "votes2": 52000
+  },
+  {
+    "id": "12",
+    "category": "lifestyle",
+    "option1": { "label": "City", "emoji": "🏙️" },
+    "option2": { "label": "Countryside", "emoji": "🏡" },
+    "votes1": 42000,
+    "votes2": 31000
+  },
+  {
+    "id": "13",
+    "category": "animals",
+    "option1": { "label": "Dinosaurs", "emoji": "🦖" },
+    "option2": { "label": "Dragons", "emoji": "🐉" },
+    "votes1": 25000,
+    "votes2": 38000
+  },
+  {
+    "id": "14",
+    "category": "movies/entertainment",
+    "option1": { "label": "Star Wars", "emoji": "⚔️" },
+    "option2": { "label": "Star Trek", "emoji": "🖖" },
+    "votes1": 58000,
+    "votes2": 21000
+  },
+  {
+    "id": "15",
+    "category": "would-you-rather",
+    "option1": { "label": "Time Travel Past", "emoji": "⏳" },
+    "option2": { "label": "Time Travel Future", "emoji": "🚀" },
+    "votes1": 47000,
+    "votes2": 39000
+  },
+  {
+    "id": "16",
+    "category": "food",
+    "option1": { "label": "Tacos", "emoji": "🌮" },
+    "option2": { "label": "Sushi", "emoji": "🍣" },
+    "votes1": 33000,
+    "votes2": 34000
+  },
+  {
+    "id": "17",
+    "category": "travel",
+    "option1": { "label": "Hotel", "emoji": "🏨" },
+    "option2": { "label": "Camping", "emoji": "🏕️" },
+    "votes1": 51000,
+    "votes2": 18000
+  },
+  {
+    "id": "18",
+    "category": "tech",
+    "option1": { "label": "Console", "emoji": "🎮" },
+    "option2": { "label": "PC Gaming", "emoji": "🖥️" },
+    "votes1": 45000,
+    "votes2": 46000
+  },
+  {
+    "id": "19",
+    "category": "lifestyle",
+    "option1": { "label": "Books", "emoji": "📚" },
+    "option2": { "label": "Movies", "emoji": "🎬" },
+    "votes1": 29000,
+    "votes2": 44000
+  },
+  {
+    "id": "20",
+    "category": "animals",
+    "option1": { "label": "Sharks", "emoji": "🦈" },
+    "option2": { "label": "Bears", "emoji": "🐻" },
+    "votes1": 15000,
+    "votes2": 22000
+  },
+  {
+    "id": "21",
+    "category": "movies/entertainment",
+    "option1": { "label": "Action", "emoji": "💥" },
+    "option2": { "label": "Comedy", "emoji": "😂" },
+    "votes1": 31000,
+    "votes2": 48000
+  },
+  {
+    "id": "22",
+    "category": "would-you-rather",
+    "option1": { "label": "Mind Reading", "emoji": "🧠" },
+    "option2": { "label": "Teleportation", "emoji": "✨" },
+    "votes1": 32000,
+    "votes2": 61000
+  },
+  {
+    "id": "23",
+    "category": "food",
+    "option1": { "label": "Pancakes", "emoji": "🥞" },
+    "option2": { "label": "Waffles", "emoji": "🧇" },
+    "votes1": 39000,
+    "votes2": 40500
+  },
+  {
+    "id": "24",
+    "category": "travel",
+    "option1": { "label": "Winter Snow", "emoji": "❄️" },
+    "option2": { "label": "Summer Sun", "emoji": "☀️" },
+    "votes1": 24000,
+    "votes2": 58000
+  },
+  {
+    "id": "25",
+    "category": "tech",
+    "option1": { "label": "Headphones", "emoji": "🎧" },
+    "option2": { "label": "Earbuds", "emoji": "🎵" },
+    "votes1": 42000,
+    "votes2": 51000
+  },
+  {
+    "id": "26",
+    "category": "lifestyle",
+    "option1": { "label": "Work from Home", "emoji": "🏠" },
+    "option2": { "label": "Office", "emoji": "🏢" },
+    "votes1": 75000,
+    "votes2": 12000
+  },
+  {
+    "id": "27",
+    "category": "animals",
+    "option1": { "label": "Penguins", "emoji": "🐧" },
+    "option2": { "label": "Pandas", "emoji": "🐼" },
+    "votes1": 31000,
+    "votes2": 30500
+  },
+  {
+    "id": "28",
+    "category": "movies/entertainment",
+    "option1": { "label": "Netflix", "emoji": "📺" },
+    "option2": { "label": "YouTube", "emoji": "▶️" },
+    "votes1": 46000,
+    "votes2": 52000
+  },
+  {
+    "id": "29",
+    "category": "would-you-rather",
+    "option1": { "label": "Speak all languages", "emoji": "🗣️" },
+    "option2": { "label": "Talk to animals", "emoji": "🐾" },
+    "votes1": 49000,
+    "votes2": 45000
+  },
+  {
+    "id": "30",
+    "category": "food",
+    "option1": { "label": "Ice Cream", "emoji": "🍦" },
+    "option2": { "label": "Cake", "emoji": "🍰" },
+    "votes1": 55000,
+    "votes2": 28000
+  },
+  {
+    "id": "31",
+    "category": "travel",
+    "option1": { "label": "Train", "emoji": "🚆" },
+    "option2": { "label": "Bus", "emoji": "🚌" },
+    "votes1": 41000,
+    "votes2": 11000
+  },
+  {
+    "id": "32",
+    "category": "tech",
+    "option1": { "label": "Dark Mode", "emoji": "🌙" },
+    "option2": { "label": "Light Mode", "emoji": "☀️" },
+    "votes1": 82000,
+    "votes2": 15000
+  },
+  {
+    "id": "33",
+    "category": "lifestyle",
+    "option1": { "label": "Save Money", "emoji": "💰" },
+    "option2": { "label": "Spend It", "emoji": "💸" },
+    "votes1": 63000,
+    "votes2": 21000
+  },
+  {
+    "id": "34",
+    "category": "animals",
+    "option1": { "label": "Lions", "emoji": "🦁" },
+    "option2": { "label": "Tigers", "emoji": "🐯" },
+    "votes1": 27000,
+    "votes2": 28500
+  },
+  {
+    "id": "35",
+    "category": "movies/entertainment",
+    "option1": { "label": "Horror", "emoji": "👻" },
+    "option2": { "label": "Romance", "emoji": "❤️" },
+    "votes1": 34000,
+    "votes2": 29000
+  },
+  {
+    "id": "36",
+    "category": "would-you-rather",
+    "option1": { "label": "Always Hot", "emoji": "🥵" },
+    "option2": { "label": "Always Cold", "emoji": "🥶" },
+    "votes1": 18000,
+    "votes2": 42000
+  },
+  {
+    "id": "37",
+    "category": "food",
+    "option1": { "label": "Fruits", "emoji": "🍎" },
+    "option2": { "label": "Vegetables", "emoji": "🥦" },
+    "votes1": 53000,
+    "votes2": 21000
+  },
+  {
+    "id": "38",
+    "category": "travel",
+    "option1": { "label": "Theme Park", "emoji": "🎢" },
+    "option2": { "label": "Museum", "emoji": "🏛️" },
+    "votes1": 46000,
+    "votes2": 32000
+  },
+  {
+    "id": "39",
+    "category": "tech",
+    "option1": { "label": "Smartwatch", "emoji": "⌚" },
+    "option2": { "label": "Classic Watch", "emoji": "🕰️" },
+    "votes1": 39000,
+    "votes2": 28000
+  },
+  {
+    "id": "40",
+    "category": "lifestyle",
+    "option1": { "label": "Introvert", "emoji": "🤫" },
+    "option2": { "label": "Extrovert", "emoji": "🥳" },
+    "votes1": 54000,
+    "votes2": 31000
+  },
+  {
+    "id": "41",
+    "category": "would-you-rather",
+    "option1": { "label": "Fight 1 horse-sized duck", "emoji": "🦆" },
+    "option2": { "label": "Fight 100 duck-sized horses", "emoji": "🐴" },
+    "votes1": 32000,
+    "votes2": 48000
+  }
+]

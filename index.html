@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1 or 2 - The Ultimate Showdown</title>
+  <meta name="description" content="A fun, head-to-head voting game. Which side are you on?">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Preload fonts to avoid FOUT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+  <header>
+    <div class="logo">1or2</div>
+    <div class="stats" aria-label="Your voting stats">
+      <div title="Current Streak">🔥 <span id="streak-text">0</span></div>
+      <div title="All-time Agreement">Agreement: <span id="agreement-text">0%</span></div>
+      <div id="progress-text">0 / 0</div>
+    </div>
+  </header>
+
+  <div class="filters-wrapper">
+    <div class="filters" id="filters" role="tablist" aria-label="Category filters">
+      <!-- Generated via JS -->
+    </div>
+  </div>
+
+  <main>
+    <!-- Game View -->
+    <div id="game-container">
+      <div id="cards-wrapper" class="matchup-cards">
+        <div class="or-badge">OR</div>
+
+        <button id="card-1" class="card option-1" aria-label="Loading option 1">
+          <!-- Populated by JS -->
+        </button>
+
+        <button id="card-2" class="card option-2" aria-label="Loading option 2">
+          <!-- Populated by JS -->
+        </button>
+      </div>
+
+      <div id="interaction-area" class="interaction-area">
+        <!-- Results, feedback, and next button appear here -->
+      </div>
+    </div>
+
+    <!-- Summary View -->
+    <div id="summary-container" class="hidden">
+      <div class="summary-card">
+        <h1 class="summary-title">Deck Complete!</h1>
+        <p class="summary-subtitle">Here's how you stack up against the internet.</p>
+
+        <div class="stat-section">
+          <h3>This Run</h3>
+          <div class="stat-grid">
+            <div class="stat-box">
+              <div class="stat-value" id="run-votes">0</div>
+              <div class="stat-label">Answered</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="run-matches">0</div>
+              <div class="stat-label">Matches</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-section">
+          <h3>All Time</h3>
+          <div class="stat-grid">
+            <div class="stat-box">
+              <div class="stat-value" id="final-votes">0</div>
+              <div class="stat-label">Total Votes</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="final-agreement">0%</div>
+              <div class="stat-label">Match %</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="final-streak">0</div>
+              <div class="stat-label">Current Streak</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="final-best-streak">0</div>
+              <div class="stat-label">Best Streak</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-actions">
+          <button id="play-again-btn" class="btn btn-primary">Shuffle & Play Again</button>
+          <button id="share-btn" class="btn">Share Stats</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>
